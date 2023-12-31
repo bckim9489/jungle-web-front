@@ -4,7 +4,7 @@ const BoardList = () => {
   const [boardList, setBoardList] = useState([]);
 
   const getBoardList = async () => {
-    const resp = await fetch("http://localhost:8080/api/all")
+    const resp = await fetch(`${process.env.REACT_APP_API_URL}/api/board`)
     const data = await resp.json();
     console.log(data)
     setBoardList(data);
@@ -17,7 +17,11 @@ const BoardList = () => {
 
   return (
     <div>
-      게시판 목록 출력
+      <ul>
+        {boardList.map((board) => (
+          <li key={board.bid}>{board.title}</li>
+        ))}
+      </ul>
     </div>
   );
 };
