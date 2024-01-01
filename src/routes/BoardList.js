@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {Link} from "react-router-dom";
 
 const BoardList = () => {
   const [boardList, setBoardList] = useState([]);
@@ -19,7 +20,9 @@ const BoardList = () => {
     <div>
       <ul>
         {boardList.map((board) => (
-          <li key={board.bid}>{board.title}</li>
+          <li key={board.bid}>
+             <Link to={`/board/${board.bid}`}>{board.title}</Link>
+          </li>
         ))}
       </ul>
     </div>
