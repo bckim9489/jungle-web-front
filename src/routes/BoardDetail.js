@@ -1,24 +1,35 @@
 /* BoardDetail.js */
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Board from '../components/Board';
 
 const BoardDetail = () => {
-    const { bid } = useParams(); // /board/:idx와 동일한 변수명으로 데이터를 꺼낼 수 있습니다.
+    const { bid } = useParams();
+    const navigate = useNavigate();
+
     const [loading, setLoading] = useState(true);
     const [board, setBoard] = useState({});
-    
+
+    const backToList = () => {
+        navigate('/board');
+    };
+
+    const goToUpdate = () => {
+        navigate(`/update/${bid}`);
+    };
 
 
     useEffect(() => {
-        const getBoard = async () => {
+        const getDetail = async () => {
             const resp = await fetch(`${process.env.REACT_APP_API_URL}/api/board/${bid}`)
             const data = await resp.json();
             setBoard(data);
             setLoading(false);
-            console.log(data);
+            // console.log(data);
         };
-        getBoard();
+
+        getDetail();
+
     }, [bid]);
     
     return (
@@ -27,12 +38,17 @@ const BoardDetail = () => {
             <h2>loading...</h2>
         ) : (
             <Board
-            idx={board.bid}
+            bid={board.bid}
             title={board.title}
             contents={board.contents}
             createdBy={board.uid}
             />
         )}
+      <div>
+        <button onClick={goToUpdate}>수정</button>
+        <button >삭제</button>
+        <button onClick={backToList} >목록</button>
+      </div>
         </div>
     );
 };
