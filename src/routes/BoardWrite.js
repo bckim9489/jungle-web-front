@@ -35,7 +35,7 @@ const BoardWrite = () => {
     }
 
     const saveBoard = async () => {
-        postData(`${process.env.REACT_APP_API_URL}/api/board`, board).then((data) => {
+        postData(`${process.env.REACT_APP_API_URL}/api/insert`, board).then((data) => {
             alert('저장되었습니다.');
             navigate('/board');
         });
