@@ -5,28 +5,44 @@ import Paging from '../components/Paging';
 const BoardList = () => {
   const navigate = useNavigate();
   const [boardList, setBoardList] = useState([]);
-
   //pagination--------------
   const [page, setPage] = useState(1);
+  const [pageInfo, setPageInfo] = useState({
+    totalPages: 0,
+    totalElements: 0,
+  });
 
   const handlePageChange = (page) => {
     setPage(page);
-    console.log(page);
+    getBoardList(page-1);
   };
   /* ------------------------ */
   const [loading, setLoading] = useState(true);
-  const getBoardList = async () => {
-    const resp = await fetch(`${process.env.REACT_APP_API_URL}/api/board`)
+  const getBoardList = async (pageNumber) => {
+    const resp = await fetch(`${process.env.REACT_APP_API_URL}/api/board`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+          page: pageNumber,
+          size: 10
+      })
+    });
     const data = await resp.json();
     setLoading(false);
-    setBoardList(data);
+    setBoardList(data.content);
+    setPageInfo({
+      totalPages : data.totalPages, 
+      totalElements : data.totalElements
+    });
   }
   
   const moveToWrite = () => {
     navigate('/write');
   };
   useEffect(() => {
-    getBoardList(); 
+    getBoardList(0); 
   }, []);
   
   return (
@@ -45,7 +61,7 @@ const BoardList = () => {
       <div>
         <Paging
           page={page}
-          totalItemsCount={boardList.length}
+          totalItemsCount={pageInfo.totalElements}
           handlePageChange={handlePageChange}
         />
       </div>
