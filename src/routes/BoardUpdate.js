@@ -8,10 +8,11 @@ const BoardUpdate = () => {
         bid: 0,
         title: '',
         uid: '',
+        userId: '',
         contents: '',
     });
 
-    const { title, uid, contents } = board; //비구조화 할당
+    const { title, userId, contents } = board; //비구조화 할당
 
     const onChange = (event) => {
         const { value, name } = event.target; //event.target에서 name과 value만 가져오기
@@ -68,7 +69,7 @@ const BoardUpdate = () => {
         <br />
         <div>
             <span>작성자</span>
-            <input type="text" name="uid" value={uid} readOnly={true} />
+            <input type="text" name="userId" value={userId} readOnly={true} />
         </div>
         <br />
         <div>

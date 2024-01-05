@@ -1,6 +1,15 @@
 import React, {useEffect, useState, useCallback} from 'react';
 import {useNavigate } from 'react-router-dom';
 import Paging from '../components/Paging';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@material-ui/core";
 
 const BoardList = () => {
   const navigate = useNavigate();
@@ -72,13 +81,28 @@ const BoardList = () => {
       {loading ? (
             <h2>loading...</h2>
       ) : (
-      <ul>
-        {boardList.map((board) => (
-          <li key={board.bid} onClick={() => goToDetail(board.bid)}>
-             {board.title}
-          </li>
+      <TableContainer component={Paper}>
+         <Table size="small">
+         <TableHead>
+          <TableRow>
+            <TableCell align='center'>No</TableCell>
+            <TableCell align="center">제목</TableCell>
+            <TableCell align="center">작성자</TableCell>
+            <TableCell align="center">작성일</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+        {boardList.map((board, index) => (
+          <TableRow key={board.bid} onClick={() => goToDetail(board.bid)}>
+            <TableCell align="center">{index + 1}</TableCell>
+            <TableCell align="center">{board.title}</TableCell>
+            <TableCell align="center">{board.userId}</TableCell>
+            <TableCell align="center">{board.firstDt}</TableCell>
+          </TableRow>
         ))}
-      </ul>
+        </TableBody>
+        </Table>
+      </TableContainer>
       )}
       <div>
         <Paging

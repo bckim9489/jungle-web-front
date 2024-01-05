@@ -5,6 +5,7 @@ import {BrowserRouter} from "react-router-dom";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
