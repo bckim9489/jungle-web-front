@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useCallback} from 'react';
-import {useNavigate } from 'react-router-dom';
+import {useNavigate, useLocation } from 'react-router-dom';
 import Paging from '../components/Paging';
 import {
   Table,
@@ -13,6 +13,8 @@ import {
 
 const BoardList = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  
   const [boardList, setBoardList] = useState([]);
   //pagination--------------
   const [page, setPage] = useState(1);
@@ -37,12 +39,19 @@ const BoardList = () => {
     }));
   };
 
+
+
   const getBoardList = useCallback(async (pageNumber, search) => {
+    let headers = new Headers({
+      'Content-Type': 'application/json',
+    });
+    const accessToken = localStorage.getItem("token");
+    if(accessToken && accessToken != null){
+      headers.append("Authorization", "Bearer "+accessToken);
+    }
     const resp = await fetch(`${process.env.REACT_APP_API_URL}/api/board`, {
       method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-      },
+      headers: headers,
       body: JSON.stringify({
           page: pageNumber,
           size: 10,
@@ -53,6 +62,7 @@ const BoardList = () => {
     const data = await resp.json();
     setLoading(false);
     setBoardList(data.content);
+
     setPageInfo(prevState => ({
       ...prevState,
       totalPages: data.totalPages,
@@ -69,12 +79,21 @@ const BoardList = () => {
   };
 
   const goToDetail = (bid) => {
-    navigate(`/board/${bid}`, { state: { page: page } });
+    navigate(`/board/${bid}`, { state: { search: pageInfo.search, page: page } });
   };
 
   useEffect(() => {
-    getBoardList(0); 
-  }, [getBoardList]);
+    if (location.state) {
+      setPageInfo(prevState => ({
+        ...prevState,
+        search: location.state.search
+      }));
+      setPage(location.state.page);
+      getBoardList(location.state.page-1, location.state.search);
+    } else {
+      getBoardList(0, pageInfo.search);
+    }
+  }, [getBoardList, location.state]);
   
   return (
     <div>

@@ -9,10 +9,11 @@ const BoardUpdate = () => {
         title: '',
         uid: '',
         userId: '',
+        userNm: '',
         contents: '',
     });
 
-    const { title, userId, contents } = board; //비구조화 할당
+    const { title, userNm, contents } = board; //비구조화 할당
 
     const onChange = (event) => {
         const { value, name } = event.target; //event.target에서 name과 value만 가져오기
@@ -22,7 +23,13 @@ const BoardUpdate = () => {
         });
     };
 
-
+    let headers = new Headers({
+        'Content-Type': 'application/json',
+    });
+    const accessToken = localStorage.getItem("token");
+    if(accessToken && accessToken != null){
+        headers.append("Authorization", "Bearer "+accessToken);
+    }
 
 
     async function putData(url = "", data = {}) {
@@ -31,9 +38,7 @@ const BoardUpdate = () => {
             mode: "cors",
             cache : "no-cache",
             credentials: 'include',
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: headers,
             body: JSON.stringify(data),
         });
         return response.json();
@@ -52,8 +57,12 @@ const BoardUpdate = () => {
 
     useEffect(() => {
         const getDetail = async () => {
-            const resp = await fetch(`${process.env.REACT_APP_API_URL}/api/board/${bid}`)
+            const resp = await fetch(`${process.env.REACT_APP_API_URL}/api/board/${bid}`, {
+                method: 'GET',
+                headers : headers
+            });
             const data = await resp.json();
+            console.log(data);
             setBoard(data);
         };
 
@@ -69,7 +78,7 @@ const BoardUpdate = () => {
         <br />
         <div>
             <span>작성자</span>
-            <input type="text" name="userId" value={userId} readOnly={true} />
+            <input type="text" name="userNm" value={userNm} readOnly={true} />
         </div>
         <br />
         <div>

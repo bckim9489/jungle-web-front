@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Board = ({ bid, title, contents, createdBy }) => {
+const Board = ({ bid, uid, title, contents, createdBy }) => {
   return (
     <div>
       <h2>{title}</h2>

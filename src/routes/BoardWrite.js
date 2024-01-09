@@ -6,11 +6,12 @@ const BoardWrite = () => {
 
     const [board, setBoard] = useState({
         title: '',
-        uid: '1',
-        contents: ''
+        uid: localStorage.getItem("uid"),
+        contents: '',
+        userNm: localStorage.getItem("userNm")
     });
 
-    const {title, uid, contents} = board;
+    const {title, userNm, contents} = board;
 
     const onChange = (event) =>{
         const {value, name} = event.target;
@@ -19,6 +20,13 @@ const BoardWrite = () => {
             [name]: value
         });
     };
+    let headers = new Headers({
+        'Content-Type': 'application/json',
+    });
+    const accessToken = localStorage.getItem("token");
+    if(accessToken && accessToken != null){
+        headers.append("Authorization", "Bearer "+accessToken);
+    }
 
     async function postData(url = "", data = {}) {
         const response  = await fetch(url, {
@@ -26,9 +34,7 @@ const BoardWrite = () => {
             mode: "cors",
             cache : "no-cache",
             credentials: 'include',
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: headers,
             body: JSON.stringify(data),
         });
         return response.json();
@@ -56,9 +62,10 @@ const BoardWrite = () => {
             <span>작성자</span>
             <input
                 type="text"
-                name="uid"
-                value= {uid}
+                name="userNm"
+                value= {userNm}
                 onChange={onChange}
+                readOnly={true}
             />
             </div>
             <br />

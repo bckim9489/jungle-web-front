@@ -1,59 +1,44 @@
-/*
-import {useEffect, useState} from "react";
-import axios from "axios";
-import Button from '@material-ui/core/Button';
-import { makeStyles } from "@material-ui/core/styles"; // styles 기능 추가
-const useStyles = makeStyles(theme => ({  // style 요소 선언
-  margin: {
-    margin: theme.spacing(1),
-}
-}));
-
-function App() {
-  const [hello, setHello] = useState('');
-
-  useEffect(() => {
-    axios.get('http://localhost:8080/api/test')
-        .then((res) => {
-          setHello(res.data);
-        })
-  }, []);
-  const classes = useStyles();
-  return (
-      <div className="App">
-        백엔드 데이터 : {hello}
-        <div >
-          <Button variant="contained" color="primary" className={classes.margin}>
-            Primary
-          </Button>
-          <Button variant="contained" color="secondary" className={classes.margin}>
-            Disabled
-          </Button>
-        </div>
-      </div>
-      
-  );
-}
-
-export default App;
-*/
-import {Route, Routes} from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Route, Routes} from 'react-router-dom';
 import BoardList from "./routes/BoardList";
 import Home from "./routes/Home";
-import React from "react";
 import BoardDetail from "./routes/BoardDetail";
 import BoardWrite from './routes/BoardWrite';
 import BoardUpdate from "./routes/BoardUpdate";
+import LoginPage from "./routes/login";
+import ProtectedRoute from './components/ProtectedRoute';
+import Header from './layout/Header';
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('uid');
+    localStorage.removeItem('userNm');
+    localStorage.removeItem('userId');
+    setIsAuthenticated(false);
+  };
+
   return (
+    <>
+    <Header isAuthenticated={isAuthenticated} logout={logout} />
     <Routes>
-      <Route path="/" element={<Home/>}/>
-      <Route path="/board" element={<BoardList/>}/>
-      <Route path="/board/:bid" element={<BoardDetail/>}/>
-      <Route path="/write" element={<BoardWrite />} />
-      <Route path="/update/:bid" element={<BoardUpdate />} />
+      <Route path="/" element={<LoginPage authenticate={() => setIsAuthenticated(true)} isAuthenticated={isAuthenticated} />} />
+      <Route path="/home" element={<ProtectedRoute isAuthenticated={isAuthenticated}><Home /></ProtectedRoute>} />
+      <Route path="/board" element={<ProtectedRoute isAuthenticated={isAuthenticated}><BoardList /></ProtectedRoute>} />
+      <Route path="/board/:bid" element={<ProtectedRoute isAuthenticated={isAuthenticated}><BoardDetail /></ProtectedRoute>} />
+      <Route path="/write" element={<ProtectedRoute isAuthenticated={isAuthenticated}><BoardWrite /></ProtectedRoute>} />
+      <Route path="/update/:bid" element={<ProtectedRoute isAuthenticated={isAuthenticated}><BoardUpdate /></ProtectedRoute>} />
     </Routes>
+    </>
   );
 }
 
