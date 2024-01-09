@@ -2,9 +2,9 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer>
+    <footer style={{textAlign:"center"}}>
       <hr/>
-      푸터 입니다.
+      ©2024. BALMYGREEN ALL RIGHTS RESERVED.
     </footer>
   );
 };
