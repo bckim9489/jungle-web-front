@@ -62,7 +62,7 @@ const BoardUpdate = () => {
                 headers : headers
             });
             const data = await resp.json();
-            console.log(data);
+            //console.log(data);
             setBoard(data);
         };
 

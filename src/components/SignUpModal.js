@@ -35,7 +35,7 @@ const SignUpModal = ({ isOpen, onRequestClose }) => {
     event.preventDefault();
     postData(`${process.env.REACT_APP_API_URL}/auth/signup`, formData).then((data) => {
         if(data.status){
-            console.log(data);
+            //console.log(data);
             alert('이미 등록된 아이디입니다.');
             setFormData({ ...formData, userId: '' });
             userIdInputRef.current.focus();

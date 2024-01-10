@@ -67,7 +67,7 @@ const BoardList = () => {
       totalPages: data.totalPages,
       totalElements: data.totalElements
     }));
-    console.log()
+    //console.log()
   }, []);
   
   const handleSearch = () => {

@@ -44,7 +44,7 @@ function LoginPage({ authenticate, isAuthenticated }) {
                 localStorage.setItem('userId', data.userId);
                 localStorage.setItem('userNm', data.userNm);
                 localStorage.setItem('uid', data.uid);
-                alert(data.token);
+                //alert(data.token);
                 navigate('/home'); // 메인 페이지로 이동
             } else {
                 alert("로그인 실패");

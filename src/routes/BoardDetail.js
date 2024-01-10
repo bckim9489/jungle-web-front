@@ -60,7 +60,7 @@ const BoardDetail = () => {
             headers : headers
         });
         const data = await resp.json();
-        console.log(data);
+        //console.log(data);
         setComments(data);
     };
 
