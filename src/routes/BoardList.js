@@ -62,12 +62,12 @@ const BoardList = () => {
     const data = await resp.json();
     setLoading(false);
     setBoardList(data.content);
-
     setPageInfo(prevState => ({
       ...prevState,
       totalPages: data.totalPages,
       totalElements: data.totalElements
     }));
+    console.log()
   }, []);
   
   const handleSearch = () => {
@@ -113,7 +113,7 @@ const BoardList = () => {
         <TableBody>
         {boardList.map((board, index) => (
           <TableRow key={board.bid} onClick={() => goToDetail(board.bid)}>
-            <TableCell align="center">{index + 1}</TableCell>
+            <TableCell align="center">{pageInfo.totalElements - (index+(10*(page-1)))}</TableCell>
             <TableCell align="center">{board.title}</TableCell>
             <TableCell align="center">{board.userId}</TableCell>
             <TableCell align="center">{board.firstDt}</TableCell>

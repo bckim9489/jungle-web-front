@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <footer style={{textAlign:"center"}}>
       <hr/>
-      ©2024. BALMYGREEN ALL RIGHTS RESERVED.
+      ©2024. JungleWeb ALL RIGHTS RESERVED.
     </footer>
   );
 };
