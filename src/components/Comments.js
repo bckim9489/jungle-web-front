@@ -3,7 +3,7 @@ import React from 'react';
 const Comments = ({ comments }) => {
   return (
     <div>
-      <h3>댓글은 "박제" 됩니다.</h3>
+      <h3>댓글</h3>
       <hr/>
       <ul>
         {comments.map(comment => (

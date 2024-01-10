@@ -62,8 +62,8 @@ const SignUpModal = ({ isOpen, onRequestClose }) => {
       bottom: 'auto',
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
-      width: '400px', // 원하는 너비
-      height: '500px', // 원하는 높이
+      width: '70%', // 원하는 너비
+      height: '60%', // 원하는 높이
       padding: '20px',
       overflow: 'auto' // 내용이 많을 때 스크롤
     }
